@@ -172,27 +172,25 @@ export default function HeroSection() {
             </svg>
             Download on the App Store
           </a>
+
+          {/* Audio control */}
+          <button
+            onClick={toggleMusic}
+            className="pointer-events-auto mt-4 flex items-center gap-2.5 px-9 py-4 rounded-full font-medium text-base transition-all duration-200 active:scale-95 hover:brightness-110"
+            style={{
+              background: isMusicPlaying ? 'linear-gradient(135deg, #8A2BE3, #F54A8A)' : 'rgba(255,255,255,0.08)',
+              border: isMusicPlaying ? '1px solid rgba(138,43,227,0.6)' : '1px solid rgba(255,255,255,0.14)',
+              boxShadow: isMusicPlaying ? '0 0 24px rgba(138,43,227,0.45)' : 'none',
+              color: 'white',
+            }}
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+              {isMusicPlaying ? <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /> : <path d="M8 5v14l11-7z" />}
+            </svg>
+            {isMusicPlaying ? 'Pause' : 'Tap to Play'}
+          </button>
         </div>
 
-      </div>
-
-      {/* ── Audio controls ── */}
-      <div className="relative z-10 flex flex-col items-center pb-10">
-        <button
-          onClick={toggleMusic}
-          className="flex items-center gap-2.5 px-9 py-4 rounded-full font-medium text-base transition-all duration-200 active:scale-95 hover:brightness-110"
-          style={{
-            background: isMusicPlaying ? 'linear-gradient(135deg, #8A2BE3, #F54A8A)' : 'rgba(255,255,255,0.08)',
-            border: isMusicPlaying ? '1px solid rgba(138,43,227,0.6)' : '1px solid rgba(255,255,255,0.14)',
-            boxShadow: isMusicPlaying ? '0 0 24px rgba(138,43,227,0.45)' : 'none',
-            color: 'white',
-          }}
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-            {isMusicPlaying ? <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /> : <path d="M8 5v14l11-7z" />}
-          </svg>
-          {isMusicPlaying ? 'Pause' : 'Tap to Play'}
-        </button>
       </div>
 
       {/* Beat flash overlay */}
