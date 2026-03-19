@@ -15,9 +15,6 @@ out/
 .env.test.local
 .env.production.local
 
-# Demo media files — keep locally, not in git (too large)
-public/videos/
-public/music/
 
 # Vercel
 .vercel
