@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waveform Options — Rhythm Reel</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0F081E;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 32px 24px 48px;
+    min-height: 100vh;
+  }
+  h1 {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 24px;
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  #playBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  #playBtn.playing {
+    background: linear-gradient(135deg, #8A2BE3, #F54A8A);
+    border-color: rgba(138,43,227,0.6);
+    box-shadow: 0 0 24px rgba(138,43,227,0.45);
+  }
+  #playBtn:hover { filter: brightness(1.1); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .cell {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .cell-label {
+    padding: 12px 16px 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,74,138,0.8);
+  }
+  .cell-desc {
+    padding: 4px 16px 10px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.28);
+    line-height: 1.4;
+  }
+  canvas {
+    width: 100%;
+    height: 120px;
+    display: block;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Rhythm Reel — Waveform Options</h1>
+
+<div class="controls">
+  <button id="playBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M8 5v14l11-7z"/></svg>
+    Tap to Play
+  </button>
+</div>
+
+<div class="grid">
+  <div class="cell">
+    <div class="cell-label">1 — Step</div>
+    <div class="cell-desc">Quantized staircase silhouette, mirrored. Blocky, geometric.</div>
+    <canvas id="c1"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">2 — Center Bars</div>
+    <div class="cell-desc">Bars grow from center up and down symmetrically.</div>
+    <canvas id="c2"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">3 — Liquid</div>
+    <div class="cell-desc">Mirror shape with bezier smoothing — organic, flowing.</div>
+    <canvas id="c3"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">4 — Aurora</div>
+    <div class="cell-desc">10 layered wave bands, each driven by a different frequency range. Stacked, atmospheric.</div>
+    <canvas id="c4"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">5 — Particles</div>
+    <div class="cell-desc">Dots mirrored top+bottom, radius and opacity by magnitude.</div>
+    <canvas id="c5"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">6 — Spines</div>
+    <div class="cell-desc">Sharp triangular spikes per bin, mirrored. Aggressive, angular.</div>
+    <canvas id="c6"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">7 — Glow Tube</div>
+    <div class="cell-desc">Mirror outline with layered neon blur. Thick luminous glow.</div>
+    <canvas id="c7"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">8 — Stems</div>
+    <div class="cell-desc">Dense thin lines from centerline, mirrored. Like reeds or grass.</div>
+    <canvas id="c8"></canvas>
+  </div>
+  <div class="cell">
+    <div class="cell-label">9 — Ripple</div>
+    <div class="cell-desc">Mirror outline echoed 3× at different scales. Depth effect.</div>
+    <canvas id="c9"></canvas>
+  </div>
+</div>
+
+<audio id="audio" src="/music/demo-track.mp3" loop preload="auto"></audio>
+
+<script>
+// ── Audio setup ──────────────────────────────────────────────────────────────
+let actx, analyser, isPlaying = false
+const BIN = 128
+
+function initAudio() {
+  if (actx) return
+  actx = new (window.AudioContext || window.webkitAudioContext)()
+  analyser = actx.createAnalyser()
+  analyser.fftSize = 2048
+  analyser.smoothingTimeConstant = 0.10
+  const audio = document.getElementById('audio')
+  const src = actx.createMediaElementSource(audio)
+  src.connect(analyser)
+  analyser.connect(actx.destination)
+}
+
+const btn = document.getElementById('playBtn')
+btn.addEventListener('click', () => {
+  initAudio()
+  if (actx.state === 'suspended') actx.resume()
+  const audio = document.getElementById('audio')
+  if (isPlaying) {
+    audio.pause(); isPlaying = false
+    btn.classList.remove('playing')
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M8 5v14l11-7z"/></svg> Tap to Play`
+  } else {
+    audio.play(); isPlaying = true
+    btn.classList.add('playing')
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Pause`
+  }
+})
+
+// ── Canvas helpers ───────────────────────────────────────────────────────────
+const canvases = [1,2,3,4,5,6,7,8,9].map(n => document.getElementById('c'+n))
+const ctxs = canvases.map(c => c.getContext('2d'))
+
+function resize() {
+  canvases.forEach((c, i) => {
+    const dpr = window.devicePixelRatio || 1
+    const W = c.offsetWidth, H = c.offsetHeight
+    if (c.width !== W*dpr || c.height !== H*dpr) {
+      c.width = W*dpr; c.height = H*dpr; ctxs[i].scale(dpr, dpr)
+    }
+  })
+}
+window.addEventListener('resize', resize)
+
+function lerp(a,b,t) { return a+(b-a)*t }
+function hGrad(ctx, W) {
+  const g = ctx.createLinearGradient(0,0,W,0)
+  g.addColorStop(0,'#FF2D55'); g.addColorStop(0.45,'#F54A8A'); g.addColorStop(1,'#8A2BE3')
+  return g
+}
+function hGradFill(ctx, W, alpha) {
+  const a = alpha || 1
+  const g = ctx.createLinearGradient(0,0,W,0)
+  g.addColorStop(0,`rgba(255,45,85,${0.14*a})`); g.addColorStop(0.5,`rgba(245,74,138,${0.10*a})`); g.addColorStop(1,`rgba(138,43,227,${0.14*a})`)
+  return g
+}
+function binColor(t) {
+  return `${lerp(255,138,t)|0},${lerp(45,43,t)|0},${lerp(85,227,t)|0}`
+}
+function roundRect(ctx,x,y,w,h,r) {
+  if (h<r*2) r=h/2; if (w<r*2) r=w/2
+  ctx.beginPath()
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y)
+  ctx.arcTo(x+w,y,x+w,y+r,r); ctx.lineTo(x+w,y+h-r)
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r); ctx.lineTo(x+r,y+h)
+  ctx.arcTo(x,y+h,x,y+h-r,r); ctx.lineTo(x,y+r)
+  ctx.arcTo(x,y,x+r,y,r); ctx.closePath()
+}
+// idle sine
+function idleSine(ctx, W, H, ph, amp, lineWidth) {
+  ctx.beginPath()
+  for (let x=0; x<=W; x+=2) {
+    const y = H/2 + Math.sin((x/W)*Math.PI*6+ph)*5
+    x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y)
+  }
+  ctx.globalAlpha=0.28; ctx.strokeStyle=hGrad(ctx,W); ctx.lineWidth=lineWidth||2; ctx.stroke(); ctx.globalAlpha=1
+}
+
+// ── 1 · Step ─────────────────────────────────────────────────────────────────
+// Quantized staircase silhouette, mirrored top+bottom
+function drawStep(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  const step=W/BIN, mid=H/2, levels=10
+  if (amp > 0.01) {
+    ctx.shadowBlur=8; ctx.shadowColor='#F54A8A'
+    // filled shape
+    ctx.beginPath(); ctx.moveTo(0, mid)
+    for (let i=0;i<BIN;i++) {
+      const q=Math.round((fd[i]/255)*amp*1.4*levels)/levels
+      const y=mid-q*mid*0.9
+      ctx.lineTo(i*step,y); ctx.lineTo((i+1)*step,y)
+    }
+    ctx.lineTo(W,mid)
+    for (let i=BIN-1;i>=0;i--) {
+      const q=Math.round((fd[i]/255)*amp*1.4*levels)/levels
+      const y=mid+q*mid*0.9
+      ctx.lineTo((i+1)*step,y); ctx.lineTo(i*step,y)
+    }
+    ctx.closePath(); ctx.fillStyle=hGradFill(ctx,W); ctx.fill()
+    // top staircase stroke
+    ctx.beginPath(); ctx.moveTo(0,mid)
+    for (let i=0;i<BIN;i++) {
+      const q=Math.round((fd[i]/255)*amp*1.4*levels)/levels
+      const y=mid-q*mid*0.9
+      ctx.lineTo(i*step,y); ctx.lineTo((i+1)*step,y)
+    }
+    ctx.strokeStyle=hGrad(ctx,W); ctx.lineWidth=1.5; ctx.stroke()
+    // bottom staircase stroke
+    ctx.beginPath(); ctx.moveTo(0,mid)
+    for (let i=0;i<BIN;i++) {
+      const q=Math.round((fd[i]/255)*amp*1.4*levels)/levels
+      const y=mid+q*mid*0.9
+      ctx.lineTo(i*step,y); ctx.lineTo((i+1)*step,y)
+    }
+    ctx.stroke()
+  } else { idleSine(ctx,W,H,ph) }
+  ctx.shadowBlur=0
+}
+
+// ── 2 · Center Bars ──────────────────────────────────────────────────────────
+function drawCenterBars(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  const bars=48, gap=W/bars, bw=gap*0.65, mid=H/2
+  if (amp > 0.01) {
+    for (let i=0;i<bars;i++) {
+      const v = fd[Math.floor(i*BIN/bars)]/255
+      const half = v*amp*mid*0.88
+      const x = i*gap+(gap-bw)/2, t=i/(bars-1)
+      ctx.fillStyle=`rgba(${binColor(t)},${0.5+v*0.45})`
+      ctx.shadowColor=`rgba(${binColor(t)},0.45)`; ctx.shadowBlur=6
+      ctx.fillRect(x, mid-half, bw, half*2)
+    }
+  } else {
+    for (let i=0;i<bars;i++) {
+      const x=i*gap+(gap-bw)/2
+      const idle=(Math.sin(ph*1.5+i*0.35)*0.5+0.5)*0.06+0.015
+      ctx.fillStyle=`rgba(245,74,138,${idle})`; ctx.shadowBlur=0
+      ctx.fillRect(x, mid-3, bw, 6)
+    }
+  }
+  ctx.shadowBlur=0
+}
+
+// ── 3 · Liquid ───────────────────────────────────────────────────────────────
+function drawLiquid(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  if (amp > 0.01) {
+    const step=W/BIN, mid=H/2
+    ctx.shadowBlur=16; ctx.shadowColor='#F54A8A'
+    // fill
+    ctx.beginPath(); ctx.moveTo(0, mid)
+    for (let i=0;i<BIN-1;i++) {
+      const y0=mid-(fd[i]/255)*amp*1.4*mid*0.9, y1=mid-(fd[i+1]/255)*amp*1.4*mid*0.9
+      const x0=i*step, x1=(i+1)*step
+      ctx.quadraticCurveTo(x0,y0,(x0+x1)/2,(y0+y1)/2)
+    }
+    for (let i=BIN-1;i>0;i--) {
+      const y0=mid+(fd[i]/255)*amp*1.4*mid*0.9, y1=mid+(fd[i-1]/255)*amp*1.4*mid*0.9
+      const x0=i*step, x1=(i-1)*step
+      ctx.quadraticCurveTo(x0,y0,(x0+x1)/2,(y0+y1)/2)
+    }
+    ctx.closePath(); ctx.fillStyle=hGradFill(ctx,W); ctx.fill()
+    // top curve
+    ctx.beginPath(); ctx.moveTo(0, mid-(fd[0]/255)*amp*1.4*mid*0.9)
+    for (let i=0;i<BIN-1;i++) {
+      const y0=mid-(fd[i]/255)*amp*1.4*mid*0.9, y1=mid-(fd[i+1]/255)*amp*1.4*mid*0.9
+      const x0=i*step, x1=(i+1)*step
+      ctx.quadraticCurveTo(x0,y0,(x0+x1)/2,(y0+y1)/2)
+    }
+    ctx.strokeStyle=hGrad(ctx,W); ctx.lineWidth=2.5; ctx.stroke()
+    // bottom curve
+    ctx.beginPath(); ctx.moveTo(0, mid+(fd[0]/255)*amp*1.4*mid*0.9)
+    for (let i=0;i<BIN-1;i++) {
+      const y0=mid+(fd[i]/255)*amp*1.4*mid*0.9, y1=mid+(fd[i+1]/255)*amp*1.4*mid*0.9
+      const x0=i*step, x1=(i+1)*step
+      ctx.quadraticCurveTo(x0,y0,(x0+x1)/2,(y0+y1)/2)
+    }
+    ctx.stroke()
+  } else { idleSine(ctx,W,H,ph,0,2.5) }
+  ctx.shadowBlur=0
+}
+
+// ── 4 · Aurora ───────────────────────────────────────────────────────────────
+// 10 horizontal wave layers, each driven by a different freq band, mirrored top+bottom
+function drawAurora(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  const mid=H/2
+  const layers=10
+  // each layer: band average drives the wave amplitude, position spreads from center
+  // layers are drawn mirrored — layer i appears at +offset and -offset from center
+  for (let li=0; li<layers; li++) {
+    const t = li/(layers-1)  // 0 = innermost, 1 = outermost
+    // color: inner layers pink, outer layers violet
+    const r=lerp(245,138,t)|0, g=lerp(74,43,t)|0, b=lerp(138,227,t)|0
+    // frequency band for this layer (low freqs = outer, high = inner)
+    const bandStart = Math.floor((1-t)*BIN*0.6)
+    const bandEnd   = Math.min(BIN-1, bandStart + Math.floor(BIN*0.08)+4)
+    let bandAvg=0
+    for (let i=bandStart;i<=bandEnd;i++) bandAvg+=fd[i]/255
+    bandAvg /= (bandEnd-bandStart+1)
+    const bandAmp = amp > 0.01 ? bandAvg*amp*1.6 : 0
+
+    // vertical spread: innermost at mid±8%, outermost at mid±44%
+    const spread = lerp(0.08, 0.44, t) * mid
+    // wave: local ripple driven by neighboring bins
+    const alpha = amp > 0.01 ? lerp(0.55, 0.20, t) : lerp(0.12,0.04,t)
+    const lw = lerp(1.8, 0.8, t)
+    const phaseOffset = li * 0.31
+
+    ctx.globalAlpha = alpha
+    ctx.strokeStyle = `rgb(${r},${g},${b})`
+    ctx.lineWidth = lw
+    ctx.shadowColor = `rgb(${r},${g},${b})`
+    ctx.shadowBlur = amp>0.01 ? lerp(10,4,t) : 2
+
+    for (const sign of [1, -1]) {
+      ctx.beginPath()
+      for (let x=0; x<=W; x+=2) {
+        const xi = (x/W)*(BIN-1)
+        const xi0=Math.floor(xi), xi1=Math.min(BIN-1,xi0+1)
+        const frac=xi-xi0
+        // interpolate local freq magnitude for fine ripple detail
+        const local=(fd[xi0]/255*(1-frac)+fd[xi1]/255*frac)*amp*1.3
+        const ripple = Math.sin((x/W)*Math.PI*8 + ph*1.4 + phaseOffset) * local * spread * 0.4
+        const y = mid + sign*(spread*(0.5+bandAmp*0.5) + ripple)
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.stroke()
+    }
+  }
+  ctx.globalAlpha=1; ctx.shadowBlur=0
+}
+
+// ── 5 · Particles ────────────────────────────────────────────────────────────
+function drawParticles(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  const step=W/BIN, mid=H/2
+  if (amp > 0.01) {
+    for (let i=0;i<BIN;i++) {
+      const v=fd[i]/255; if(v<0.04) continue
+      const x=i*step+step/2, dy=v*amp*1.3*mid*0.88
+      const r=1.5+v*amp*5, t=i/BIN
+      ctx.beginPath(); ctx.arc(x,mid-dy,r,0,Math.PI*2)
+      ctx.fillStyle=`rgba(${binColor(t)},${0.4+v*0.55})`
+      ctx.shadowColor=`rgba(${binColor(t)},0.55)`; ctx.shadowBlur=6+v*10; ctx.fill()
+      ctx.beginPath(); ctx.arc(x,mid+dy,r,0,Math.PI*2); ctx.fill()
+    }
+  } else {
+    for (let i=0;i<BIN;i+=3) {
+      const x=i*step+step/2, pulse=(Math.sin(ph*2+i*0.15)*0.5+0.5)
+      ctx.beginPath(); ctx.arc(x,mid,1.5,0,Math.PI*2)
+      ctx.fillStyle=`rgba(245,74,138,${pulse*0.18})`; ctx.shadowBlur=0; ctx.fill()
+    }
+  }
+  ctx.shadowBlur=0
+}
+
+// ── 6 · Spines ───────────────────────────────────────────────────────────────
+// Sharp triangular spikes per bin, mirrored top+bottom
+function drawSpines(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  const step=W/BIN, mid=H/2, hw=step*0.4
+  if (amp > 0.01) {
+    ctx.shadowBlur=8; ctx.shadowColor='#F54A8A'
+    for (let i=0;i<BIN;i++) {
+      const v=fd[i]/255; if(v<0.03) continue
+      const spike=v*amp*1.5*mid*0.92
+      const cx=i*step+step/2, t=i/BIN
+      ctx.beginPath()
+      ctx.moveTo(cx-hw, mid)
+      ctx.lineTo(cx, mid-spike)
+      ctx.lineTo(cx+hw, mid)
+      ctx.lineTo(cx, mid+spike)
+      ctx.closePath()
+      ctx.fillStyle=`rgba(${binColor(t)},${0.35+v*amp*0.55})`
+      ctx.fill()
+    }
+  } else {
+    for (let i=0;i<BIN;i+=2) {
+      const cx=i*step+step/2, idle=(Math.sin(ph+i*0.3)*0.5+0.5)*3+1
+      ctx.beginPath(); ctx.moveTo(cx-hw,mid); ctx.lineTo(cx,mid-idle); ctx.lineTo(cx+hw,mid); ctx.lineTo(cx,mid+idle); ctx.closePath()
+      ctx.fillStyle=`rgba(245,74,138,0.12)`; ctx.shadowBlur=0; ctx.fill()
+    }
+  }
+  ctx.shadowBlur=0
+}
+
+// ── 7 · Glow Tube ────────────────────────────────────────────────────────────
+// Mirror shape drawn 4× with decreasing blur — thick luminous neon tube
+function drawGlowTube(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  if (amp > 0.01) {
+    const step=W/BIN, mid=H/2
+    const passes = [
+      { blur:28, alpha:0.18, lw:8 },
+      { blur:14, alpha:0.30, lw:4 },
+      { blur:6,  alpha:0.55, lw:2 },
+      { blur:0,  alpha:1.00, lw:1.5 },
+    ]
+    for (const { blur, alpha, lw } of passes) {
+      ctx.shadowBlur=blur; ctx.shadowColor='#F54A8A'
+      ctx.globalAlpha=alpha
+      // top
+      ctx.beginPath()
+      for (let i=0;i<BIN;i++) {
+        const v=(fd[i]/255)*amp*1.4, x=i*step, y=mid-v*mid*0.9
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.strokeStyle=hGrad(ctx,W); ctx.lineWidth=lw; ctx.stroke()
+      // bottom (mirror)
+      ctx.beginPath()
+      for (let i=0;i<BIN;i++) {
+        const v=(fd[i]/255)*amp*1.4, x=i*step, y=mid+v*mid*0.9
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.stroke()
+    }
+    ctx.globalAlpha=1
+  } else {
+    ctx.shadowBlur=6; ctx.shadowColor='#8A2BE3'
+    idleSine(ctx,W,H,ph,0,2)
+  }
+  ctx.shadowBlur=0
+}
+
+// ── 8 · Stems ────────────────────────────────────────────────────────────────
+// Dense individual lines from centerline, mirrored
+function drawStems(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  const mid=H/2
+  const count=BIN
+  const step=W/count
+  if (amp > 0.01) {
+    for (let i=0;i<count;i++) {
+      const v=fd[i]/255; if(v<0.02) continue
+      const len=v*amp*1.4*mid*0.9
+      const x=i*step+step/2, t=i/count
+      ctx.strokeStyle=`rgba(${binColor(t)},${0.4+v*0.55})`
+      ctx.lineWidth=1.2
+      ctx.shadowColor=`rgba(${binColor(t)},0.5)`; ctx.shadowBlur=4
+      ctx.beginPath(); ctx.moveTo(x,mid-len); ctx.lineTo(x,mid+len); ctx.stroke()
+    }
+  } else {
+    for (let i=0;i<count;i+=2) {
+      const x=i*step+step/2
+      const idle=(Math.sin(ph*1.2+i*0.2)*0.5+0.5)*4+2
+      ctx.strokeStyle='rgba(245,74,138,0.10)'; ctx.lineWidth=1; ctx.shadowBlur=0
+      ctx.beginPath(); ctx.moveTo(x,mid-idle); ctx.lineTo(x,mid+idle); ctx.stroke()
+    }
+  }
+  ctx.shadowBlur=0
+}
+
+// ── 9 · Ripple ───────────────────────────────────────────────────────────────
+// Mirror outline drawn 3× at shrinking scales with decreasing opacity — depth/echo
+function drawRipple(ctx, W, H, fd, td, amp, ph) {
+  ctx.clearRect(0,0,W,H)
+  if (amp > 0.01) {
+    const step=W/BIN, mid=H/2
+    const echoes = [
+      { scale:1.00, alpha:1.00, lw:1.5, blur:8  },
+      { scale:0.65, alpha:0.45, lw:1.2, blur:4  },
+      { scale:0.32, alpha:0.20, lw:1.0, blur:2  },
+    ]
+    for (const { scale, alpha, lw, blur } of echoes) {
+      ctx.shadowBlur=blur; ctx.shadowColor='#F54A8A'; ctx.globalAlpha=alpha
+      ctx.beginPath()
+      for (let i=0;i<BIN;i++) {
+        const v=(fd[i]/255)*amp*1.4*scale, x=i*step, y=mid-v*mid*0.9
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.strokeStyle=hGrad(ctx,W); ctx.lineWidth=lw; ctx.stroke()
+      ctx.beginPath()
+      for (let i=0;i<BIN;i++) {
+        const v=(fd[i]/255)*amp*1.4*scale, x=i*step, y=mid+v*mid*0.9
+        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.stroke()
+    }
+    ctx.globalAlpha=1
+  } else {
+    for (let pass=0; pass<3; pass++) {
+      const a=[0.28,0.14,0.07][pass]
+      ctx.beginPath()
+      for (let x=0;x<=W;x+=2) {
+        const y=H/2+Math.sin((x/W)*Math.PI*6+ph-pass*0.4)*5
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+      }
+      ctx.globalAlpha=a; ctx.strokeStyle=hGrad(ctx,W); ctx.lineWidth=2; ctx.stroke()
+    }
+    ctx.globalAlpha=1
+  }
+  ctx.shadowBlur=0
+}
+
+// ── RAF loop ─────────────────────────────────────────────────────────────────
+const drawFns = [drawStep, drawCenterBars, drawLiquid, drawAurora, drawParticles, drawSpines, drawGlowTube, drawStems, drawRipple]
+let phase = 0
+
+function loop() {
+  resize()
+  phase += 0.015
+
+  let amp=0
+  const fd=new Uint8Array(BIN), td=new Uint8Array(BIN)
+  if (analyser && isPlaying) {
+    analyser.getByteFrequencyData(fd)
+    analyser.getByteTimeDomainData(td)
+    let s=0; for(let i=0;i<BIN;i++) s+=(fd[i]/255)**2
+    amp = Math.min(1, Math.pow(Math.sqrt(s/BIN)*2.5, 1.2))
+  }
+
+  drawFns.forEach((fn, i) => {
+    const c=canvases[i], ctx=ctxs[i], W=c.offsetWidth, H=c.offsetHeight
+    if (W>0 && H>0) fn(ctx,W,H,fd,td,amp,phase)
+  })
+
+  requestAnimationFrame(loop)
+}
+requestAnimationFrame(loop)
+</script>
+</body>
+</html>
