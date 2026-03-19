@@ -10,7 +10,7 @@ const HOW_IT_WORKS = [
   {
     step: '02',
     title: 'Play music',
-    desc: 'Use the mic to catch ambient sound — or import any audio file directly.',
+    desc: 'Use the mic to catch ambient sound or import any audio file directly.',
   },
   {
     step: '03',
