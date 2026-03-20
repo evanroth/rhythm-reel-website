@@ -97,25 +97,21 @@ export default function HeroSection() {
       />
 
       {/* ── Scattered video + logo area ── */}
-      <div ref={heroAreaRef} className="relative flex-1 flex items-center justify-center" style={{ minHeight: '80svh' }}>
+      <div ref={heroAreaRef} className="relative flex-1 flex items-center justify-center md:min-h-[80svh]">
 
-        {/* Waveform — behind everything, center aligned to wordmark */}
-        <div className="absolute inset-x-0 pointer-events-none" style={{ top: `${waveformCenterPct - 15}%`, height: '30%', zIndex: 1 }}>
+        {/* Waveform — behind everything, center aligned to wordmark (desktop only) */}
+        <div className="hidden md:block absolute inset-x-0 pointer-events-none" style={{ top: `${waveformCenterPct - 15}%`, height: '30%', zIndex: 1 }}>
           <Waveform frequencyData={frequencyData} amplitude={amplitude} isActive={isActive} />
         </div>
 
-        {/* Videos — z-index 2, above waveform */}
+        {/* Videos — desktop scattered layout (hidden on mobile) */}
         {VIDEO_LAYOUT.map((layout, i) => {
           const { width, aspect, rotate, offset, ...pos } = layout
           const height = Math.round(width / aspect)
           return (
-            <VideoCell
+            <div
               key={i}
-              src={VIDEO_SRCS[i]}
-              amplitudeRef={amplitudeRef}
-              offset={offset}
-              beatFlash={beatFlash}
-              index={i}
+              className="hidden md:block"
               style={{
                 position: 'absolute',
                 width: `${width}px`,
@@ -125,13 +121,21 @@ export default function HeroSection() {
                 zIndex: 2,
                 ...pos,
               }}
-            />
+            >
+              <VideoCell
+                src={VIDEO_SRCS[i]}
+                amplitudeRef={amplitudeRef}
+                offset={offset}
+                beatFlash={beatFlash}
+                index={i}
+              />
+            </div>
           )
         })}
 
         {/* Logo — z-index 10, above videos and waveform */}
         <div
-          className="relative flex flex-col items-center text-center pointer-events-none select-none"
+          className="relative flex flex-col items-center text-center pointer-events-none select-none py-16 md:py-0"
           style={{
             zIndex: 10,
             transform: `scale(${logoScale})`,
@@ -144,7 +148,7 @@ export default function HeroSection() {
             src="/logo/wordmark.png"
             alt="RhythmReel"
             style={{
-              width: 'clamp(280px, 45vw, 680px)',
+              width: 'clamp(200px, 65vw, 680px)',
               height: 'auto',
               filter: `drop-shadow(0 0 ${8 + amplitude * 22}px rgba(245,74,138,${0.3 + amplitude * 0.45}))`,
               display: 'block',
@@ -174,6 +178,25 @@ export default function HeroSection() {
             </svg>
             {isMusicPlaying ? 'Pause' : 'See it in action'}
           </button>
+
+          {/* Mobile-only horizontal video strip */}
+          <div className="flex md:hidden gap-3 overflow-x-auto mt-8 pb-2 pointer-events-auto" style={{ maxWidth: '100vw' }}>
+            {VIDEO_LAYOUT.map((layout, i) => {
+              const mobileWidth = 100
+              const mobileHeight = Math.round(mobileWidth / layout.aspect)
+              return (
+                <VideoCell
+                  key={i}
+                  src={VIDEO_SRCS[i]}
+                  amplitudeRef={amplitudeRef}
+                  offset={layout.offset}
+                  beatFlash={beatFlash}
+                  index={i}
+                  style={{ width: `${mobileWidth}px`, height: `${mobileHeight}px`, flexShrink: 0 }}
+                />
+              )
+            })}
+          </div>
         </div>
 
       </div>

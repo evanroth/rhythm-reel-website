@@ -9,7 +9,7 @@ export default function TopNav() {
     <div className="fixed top-5 right-5 z-50 flex items-center gap-4">
       <button
         onClick={scrollToHowItWorks}
-        className="text-white/60 hover:text-white text-sm font-medium transition-colors"
+        className="hidden md:block text-white/60 hover:text-white text-sm font-medium transition-colors"
       >
         How it Works
       </button>
