@@ -6,17 +6,17 @@ const HOW_IT_WORKS = [
   {
     step: '01',
     title: 'Pick a video',
-    desc: 'Any clip or Live Photo from your camera roll. Even a 2-second Loop.',
+    desc: 'Import any video or live photo from your phone, or record a short clip in the app. Short videos (2–3 seconds) of single gestures tend to work well.',
   },
   {
     step: '02',
     title: 'Play music',
-    desc: 'Use the mic to catch ambient sound or import any audio file directly.',
+    desc: 'Use your phone\'s mic to catch ambient sound or import any audio file directly. The audio scrubs your video in real time. Loud sounds move the playhead all the way to the end of the video, and soft sounds only move the playhead slightly.',
   },
   {
     step: '03',
-    title: 'Record & share',
-    desc: 'Tap record. The audio scrubs your video in real time. Export and post.',
+    title: 'Record & Share',
+    desc: 'Tap "Record to export". A video of your RhythmReel is saved to your photos for easy sharing with friends via message or on social media.',
   },
 ]
 
@@ -24,22 +24,22 @@ const FEATURES = [
   {
     icon: '〰',
     title: 'Waveform overlay',
-    desc: 'Real-time frequency visualiser baked right into the frame.',
+    desc: 'Select from multiple real-time frequency visualizations that get baked right into the exported video.',
   },
   {
-    icon: '✦',
-    title: 'Scale pulse',
-    desc: 'The video gently scales with each beat — addictive to watch.',
+    icon: '⚙',
+    title: 'Settings',
+    desc: 'Advanced settings allow control over audio reactivity and visual elements on screen.',
   },
   {
     icon: '▤',
     title: 'Multi-clip playlist',
-    desc: 'Line up clips and cycle them manually, on beat, or on a timer.',
+    desc: 'Select multiple clips to play them sequentially in a looping cycle.',
   },
   {
     icon: 'T',
     title: 'Text overlay',
-    desc: 'Drag, resize, and stylise text that gets composited into the export.',
+    desc: 'Type, move, resize, and stylise text that moves to the audio and gets composited into the export.',
   },
 ]
 
@@ -105,23 +105,12 @@ export default function HomePage() {
         <div className="max-w-2xl mx-auto text-center">
           <p
             className="font-light leading-relaxed"
-            style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', color: 'rgba(255,255,255,0.7)' }}
+            style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'rgba(255,255,255,0.55)' }}
           >
-            RhythmReel makes your videos move to music.
-          </p>
-          <p
-            className="mt-5 font-light leading-relaxed"
-            style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'rgba(255,255,255,0.45)' }}
-          >
-            Pick a clip. Play a song. The audio controls everything — when the beat drops,
-            your video jumps forward. When it quiets, it eases back. The result is a hypnotic,
-            music-reactive video you can record and post to Instagram or TikTok in under a minute.
-          </p>
-          <p
-            className="mt-5 font-light"
-            style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)', color: 'rgba(255,255,255,0.3)' }}
-          >
-            No timelines. No keyframes. Just music and motion.
+            RhythmReel is an iPhone app I made that makes your videos and live photos move to music.
+            Pick a clip. Play a song. The audio controls everything — when the beat drops, your video
+            jumps forward. When it quiets, it eases back. The result is a playful, music-reactive video
+            you can make and share with friends and post to social media in seconds.
           </p>
         </div>
       </section>
@@ -136,7 +125,7 @@ export default function HomePage() {
               color: 'rgba(255,255,255,0.9)',
             }}
           >
-            Everything you need.{' '}
+            No timelines. No keyframes.{' '}
             <span
               style={{
                 background: 'linear-gradient(135deg, #F54A8A, #8A2BE3)',
@@ -145,7 +134,7 @@ export default function HomePage() {
                 backgroundClip: 'text',
               }}
             >
-              Nothing you don&apos;t.
+              Just music and motion.
             </span>
           </h2>
 
@@ -187,7 +176,7 @@ export default function HomePage() {
             backgroundClip: 'text',
           }}
         >
-          Ready to make it move?
+          RhythmReel: Music makes it move
         </h2>
         <p className="text-white/40 mb-8 text-lg font-light">Free on the App Store. iPhone only.</p>
         <a
