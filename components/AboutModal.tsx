@@ -40,20 +40,22 @@ export default function AboutModal({ onClose }: Props) {
         <h2 className="text-white font-black text-2xl tracking-tight mb-5">Evan Roth</h2>
 
         <p className="text-white/65 text-sm leading-relaxed mb-3">
-          Hi, my name is Evan Roth, I&apos;m a visual artist living in Berlin. I work in a range of mediums
-          from photography, painting, video, textiles and software — you can see the art I make at{' '}
+          I&apos;m Evan Roth, a visual artist based in Berlin. My work spans photography, painting,
+          video, textiles, and software — you can see the art I make at{' '}
           <a href="https://evan-roth.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>evan-roth.com</a>.
+          It&apos;s in the permanent collection of MoMA, among other places.
         </p>
 
         <p className="text-white/65 text-sm leading-relaxed mb-3">
-          I&apos;m also a life long music lover, and have been spending more and more of my after hours
-          time learning to DJ, making beats (I made the beat playing on this site), modifying DJ gear
-          and making music related software, like RhythmReel, which I post to my YouTube channel{' '}
-          <a href="https://www.youtube.com/@evan-roth-com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>Beats and Bobbins</a>.
+          I&apos;m also a lifelong music lover who has been spending more and more of my after-hours
+          time learning to DJ, making beats (I made the beat playing on this site), and building
+          music software. RhythmReel is the latest result of that obsession.
         </p>
 
         <p className="text-white/65 text-sm leading-relaxed mb-6">
-          You can also follow me on Instagram at{' '}
+          More software and tutorials on YouTube at{' '}
+          <a href="https://www.youtube.com/@evan-roth-com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>Beats and Bobbins</a>.
+          {' '}Instagram at{' '}
           <a href="https://www.instagram.com/evanroth_/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>@evanroth_</a>.
         </p>
       </div>
