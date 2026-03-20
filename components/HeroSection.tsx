@@ -179,9 +179,9 @@ export default function HeroSection() {
             {isMusicPlaying ? 'Pause' : 'See it in action'}
           </button>
 
-          {/* Mobile-only 2×3 video grid */}
+          {/* Mobile-only video grid — 3 videos (1 row) for seek performance */}
           <div className="grid md:hidden grid-cols-3 gap-3 mt-8 pointer-events-auto w-full px-4">
-            {VIDEO_LAYOUT.map((layout, i) => {
+            {VIDEO_LAYOUT.slice(0, 3).map((layout, i) => {
               const mobileWidth = 100
               const mobileHeight = Math.round(mobileWidth / layout.aspect)
               return (
