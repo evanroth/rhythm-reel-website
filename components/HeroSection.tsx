@@ -179,8 +179,8 @@ export default function HeroSection() {
             {isMusicPlaying ? 'Pause' : 'See it in action'}
           </button>
 
-          {/* Mobile-only horizontal video strip */}
-          <div className="flex md:hidden gap-3 overflow-x-auto mt-8 pb-2 pointer-events-auto" style={{ maxWidth: '100vw' }}>
+          {/* Mobile-only 2×3 video grid */}
+          <div className="grid md:hidden grid-cols-3 gap-3 mt-8 pointer-events-auto w-full px-4">
             {VIDEO_LAYOUT.map((layout, i) => {
               const mobileWidth = 100
               const mobileHeight = Math.round(mobileWidth / layout.aspect)
@@ -192,7 +192,7 @@ export default function HeroSection() {
                   offset={layout.offset}
                   beatFlash={beatFlash}
                   index={i}
-                  style={{ width: `${mobileWidth}px`, height: `${mobileHeight}px`, flexShrink: 0 }}
+                  style={{ width: '100%', height: `${mobileHeight}px` }}
                 />
               )
             })}
