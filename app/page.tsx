@@ -1,5 +1,6 @@
 import HeroSection from '@/components/HeroSection'
 import Footer from '@/components/Footer'
+import TopNav from '@/components/TopNav'
 
 const HOW_IT_WORKS = [
   {
@@ -46,11 +47,13 @@ export default function HomePage() {
   return (
     <main style={{ background: '#0F081E' }}>
 
+      <TopNav />
+
       {/* Hero — interactive audio-reactive demo */}
       <HeroSection />
 
       {/* How it works */}
-      <section className="py-24 px-6">
+      <section id="how-it-works" className="py-24 px-6">
         <div className="max-w-4xl mx-auto">
           <h2
             className="text-center font-black tracking-tight mb-16"
