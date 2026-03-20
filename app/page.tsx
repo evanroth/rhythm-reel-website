@@ -79,7 +79,7 @@ export default function HomePage() {
                 }}
               >
                 <span
-                  className="text-xs font-black tracking-widest"
+                  className="text-4xl font-black tracking-widest"
                   style={{
                     background: 'linear-gradient(135deg, #F54A8A, #8A2BE3)',
                     WebkitBackgroundClip: 'text',
