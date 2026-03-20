@@ -37,45 +37,25 @@ export default function AboutModal({ onClose }: Props) {
         </button>
 
         {/* Content */}
-        <h2 className="text-white font-black text-2xl tracking-tight mb-1">Evan Roth</h2>
-        <p className="text-white/40 text-xs uppercase tracking-widest mb-5">Berlin, Germany</p>
+        <h2 className="text-white font-black text-2xl tracking-tight mb-5">Evan Roth</h2>
 
-        <p className="text-white/65 text-sm leading-relaxed mb-6">
-          Evan Roth is a Berlin-based multimedia artist and developer whose work spans software,
-          digital installations, and tools that sit at the intersection of technology and culture.
-          A graduate of Parsons School of Design and co-founder of the Graffiti Research Lab,
-          he builds apps and creative projects that explore how code can make everyday media
-          more expressive — including RhythmReel.
+        <p className="text-white/65 text-sm leading-relaxed mb-3">
+          Hi, my name is Evan Roth, I&apos;m a visual artist living in Berlin. I work in a range of mediums
+          from photography, painting, video, textiles and software — you can see the art I make at{' '}
+          <a href="https://evan-roth.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>evan-roth.com</a>.
         </p>
 
-        <div className="flex flex-col gap-3">
-          <a
-            href="https://evan-roth.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
-            style={{ color: '#F54A8A' }}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 shrink-0">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-            </svg>
-            evan-roth.com
-          </a>
+        <p className="text-white/65 text-sm leading-relaxed mb-3">
+          I&apos;m also a life long music lover, and have been spending more and more of my after hours
+          time learning to DJ, making mix tapes, modifying DJ gear and making music related software
+          which I post to my YouTube channel{' '}
+          <a href="https://www.youtube.com/@evan-roth-com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>Beats and Bobbins</a>.
+        </p>
 
-          <a
-            href="https://www.youtube.com/@evan-roth-com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
-            style={{ color: '#F54A8A' }}
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 shrink-0">
-              <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z" />
-            </svg>
-            YouTube
-          </a>
-        </div>
+        <p className="text-white/65 text-sm leading-relaxed mb-6">
+          You can also follow me on Instagram at{' '}
+          <a href="https://www.instagram.com/evanroth_/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>@evanroth_</a>.
+        </p>
       </div>
     </>
   )
