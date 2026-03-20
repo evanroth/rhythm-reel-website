@@ -135,7 +135,7 @@ export default function HeroSection() {
 
         {/* Logo — z-index 10, above videos and waveform */}
         <div
-          className="relative flex flex-col items-center text-center pointer-events-none select-none py-16 md:py-0"
+          className="relative flex flex-col items-center text-center pointer-events-none select-none py-16 md:py-0 w-full md:w-auto"
           style={{
             zIndex: 10,
             transform: `scale(${logoScale})`,
