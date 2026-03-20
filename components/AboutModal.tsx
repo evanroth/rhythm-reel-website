@@ -47,8 +47,8 @@ export default function AboutModal({ onClose }: Props) {
 
         <p className="text-white/65 text-sm leading-relaxed mb-3">
           I&apos;m also a life long music lover, and have been spending more and more of my after hours
-          time learning to DJ, making mix tapes, modifying DJ gear and making music related software
-          which I post to my YouTube channel{' '}
+          time learning to DJ, making beats (I made the beat playing on this site), modifying DJ gear
+          and making music related software, like RhythmReel, which I post to my YouTube channel{' '}
           <a href="https://www.youtube.com/@evan-roth-com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>Beats and Bobbins</a>.
         </p>
 
