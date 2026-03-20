@@ -125,7 +125,7 @@ export default function HomePage() {
               color: 'rgba(255,255,255,0.9)',
             }}
           >
-            No timelines. No keyframes.{' '}
+            Audio amplitude mapped to video playback{' '}
             <span
               style={{
                 background: 'linear-gradient(135deg, #F54A8A, #8A2BE3)',
@@ -134,7 +134,7 @@ export default function HomePage() {
                 backgroundClip: 'text',
               }}
             >
-              Just music and motion.
+              for the children.
             </span>
           </h2>
 
