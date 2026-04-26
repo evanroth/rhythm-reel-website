@@ -9,7 +9,7 @@ const FAQ = [
   },
   {
     q: 'Can I use music from Spotify or Apple Music?',
-    a: 'Yes — set RhythmReel to use the microphone, then play music from any app. RhythmReel listens to the audio around you, so any music source works.',
+    a: 'You can import songs from the Music Library on your phone, but you can not, unfortunately, import music from Spotify.',
   },
   {
     q: 'I don\'t have any music on my phone, what do I do?',
@@ -17,7 +17,7 @@ const FAQ = [
   },
   {
     q: 'What is the watermark on my exported video?',
-    a: 'Exports include a small "Made with Rhythm Reel" logo. It can be removed via an in-app purchase.',
+    a: 'Exports include a "Made with Rhythm Reel" logo. It can be removed via an in-app purchase.',
   },
   {
     q: 'Can I export in higher quality?',
@@ -39,17 +39,17 @@ const FAQ = [
 
 const HOW_IT_WORKS = [
   {
-    step: '01',
+    step: '1',
     title: 'Pick a video',
     desc: 'Import any video or live photo from your phone, or record a short clip in the app. Short videos (2–3 seconds) of single gestures tend to work well.',
   },
   {
-    step: '02',
+    step: '2',
     title: 'Play music',
     desc: 'Use your phone\'s mic, import any audio file, or choose one of the included songs. The audio scrubs your video in real time. Loud sounds move the playhead all the way to the end of the video, and soft sounds only move the playhead slightly.',
   },
   {
-    step: '03',
+    step: '3',
     title: 'Record & Share',
     desc: 'Tap "Export". A video of your RhythmReel is saved to your photos for easy sharing with friends via message or on social media.',
   },
@@ -199,42 +199,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About the Creator */}
-      <section
-        id="about"
-        className="py-20 px-6"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
-      >
-        <div className="max-w-2xl mx-auto">
-          <h2
-            className="font-black tracking-tight mb-8"
-            style={{
-              fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
-              color: 'rgba(255,255,255,0.9)',
-            }}
-          >
-            Evan Roth
-          </h2>
-          <p className="text-white/65 text-sm leading-relaxed mb-4">
-            I&apos;m Evan Roth, a visual artist based in Berlin. My work spans photography, painting,
-            video, textiles, and software — you can see the art I make at{' '}
-            <a href="https://evan-roth.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>evan-roth.com</a>.
-            It&apos;s in the permanent collection of MoMA, among other places.
-          </p>
-          <p className="text-white/65 text-sm leading-relaxed mb-4">
-            I&apos;m also a lifelong music lover who has been spending more and more of my after-hours
-            time learning to DJ, making beats (I made the beat playing on this site), and building
-            music software. RhythmReel is the latest result of that obsession.
-          </p>
-          <p className="text-white/65 text-sm leading-relaxed">
-            More software and tutorials on YouTube at{' '}
-            <a href="https://www.youtube.com/@evan-roth-com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>Beats and Bobbins</a>.
-            {' '}Instagram at{' '}
-            <a href="https://www.instagram.com/evanroth_/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>@evanroth_</a>.
-          </p>
-        </div>
-      </section>
-
       {/* FAQ */}
       <section
         id="faq"
@@ -263,6 +227,28 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* About the Creator */}
+      <section
+        id="about"
+        className="py-20 px-6"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+      >
+        <div className="max-w-2xl mx-auto">
+          <h2
+            className="font-black tracking-tight mb-8"
+            style={{
+              fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+              color: 'rgba(255,255,255,0.9)',
+            }}
+          >
+            Made by Me
+          </h2>
+          <p className="text-white/65 text-sm leading-relaxed">
+            I made the songs included in the app and playing on this site.
+          </p>
         </div>
       </section>
 

@@ -14,6 +14,8 @@ const VIDEO_SRCS = [
   '/videos/demo-4.mp4',
   '/videos/demo-5.mp4',
   '/videos/demo-6.mp4',
+  '/videos/demo-7.mp4',
+  '/videos/demo-8.mp4',
 ]
 
 // Scattered layout: each video has a unique position (% from center), size, rotation, and scrub offset.
@@ -27,6 +29,9 @@ const VIDEO_LAYOUT = [
   { right: '2%', top: '10%', width: 185, aspect: 9/16, rotate: 6,   offset:  0.03 }, // top-right
   { right: '11%', top: '28%', width: 155, aspect: 9/16, rotate: -4,  offset: -0.04 }, // mid-right (overlaps outer videos)
   { right: '3%', top: '62%', width: 195, aspect: 9/16, rotate: 4,   offset:  0.02 }, // bot-right
+  // inner-center pair — new positions
+  { left: '22%',  top: '53%', width: 145, aspect: 9/16, rotate: 5,  offset:  0.05 }, // inner-left
+  { right: '22%', top: '53%', width: 145, aspect: 9/16, rotate: -5, offset: -0.05 }, // inner-right
 ]
 
 export default function HeroSection() {
