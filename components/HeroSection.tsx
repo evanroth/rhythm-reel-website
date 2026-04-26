@@ -29,9 +29,9 @@ const VIDEO_LAYOUT = [
   { right: '2%', top: '10%', width: 185, aspect: 9/16, rotate: 6,   offset:  0.03 }, // top-right
   { right: '11%', top: '28%', width: 155, aspect: 9/16, rotate: -4,  offset: -0.04 }, // mid-right (overlaps outer videos)
   { right: '3%', top: '62%', width: 195, aspect: 9/16, rotate: 4,   offset:  0.02 }, // bot-right
-  // inner-center pair — new positions
-  { left: '22%',  top: '53%', width: 145, aspect: 9/16, rotate: 5,  offset:  0.05 }, // inner-left
-  { right: '22%', top: '53%', width: 145, aspect: 9/16, rotate: -5, offset: -0.05 }, // inner-right
+  // inner-center pair — sit in front of adjacent outer cards
+  { left: '15%',  top: '51%', width: 168, aspect: 9/16, rotate: 5,  offset:  0.05, zIndex: 3 }, // inner-left
+  { right: '15%', top: '51%', width: 168, aspect: 9/16, rotate: -5, offset: -0.05, zIndex: 3 }, // inner-right
 ]
 
 export default function HeroSection() {
@@ -111,7 +111,7 @@ export default function HeroSection() {
 
         {/* Videos — desktop scattered layout (hidden on mobile) */}
         {VIDEO_LAYOUT.map((layout, i) => {
-          const { width, aspect, rotate, offset, ...pos } = layout
+          const { width, aspect, rotate, offset, zIndex, ...pos } = layout
           const height = Math.round(width / aspect)
           return (
             <div
@@ -123,7 +123,7 @@ export default function HeroSection() {
                 height: `${height}px`,
                 transform: `rotate(${rotate}deg)`,
                 transformOrigin: 'center center',
-                zIndex: 2,
+                zIndex: zIndex ?? 2,
                 ...pos,
               }}
             >
