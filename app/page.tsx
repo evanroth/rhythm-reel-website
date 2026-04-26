@@ -248,12 +248,14 @@ export default function HomePage() {
           </h2>
           <p className="text-white/65 text-sm leading-relaxed mb-4">
             I&apos;m Evan Roth, a visual artist based in Berlin. My work spans photography, painting,
-            video, textiles, and software — you can see the art I make at{' '}
-            <a href="https://evan-roth.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>evan-roth.com</a>.
-            It&apos;s in the permanent collection of MoMA, among other places.
+            video, textiles, and software. You can see the art I make at{' '}
+            <a href="https://evan-roth.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>evan-roth.com</a>
+            {' '}as well the permanent collection of MoMA, among other places.
           </p>
           <p className="text-white/65 text-sm leading-relaxed mb-4">
-            I made the songs included in the app and playing on this site.
+            I&apos;m also a lifelong music lover who has been spending more and more of my after-hours
+            time learning to DJ, making beats (I made the songs included in the app and playing on
+            this site), and building music software. RhythmReel is the latest result of that obsession.
           </p>
           <p className="text-white/65 text-sm leading-relaxed">
             More software and tutorials on YouTube at{' '}
