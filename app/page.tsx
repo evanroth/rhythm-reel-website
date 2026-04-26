@@ -2,6 +2,41 @@ import HeroSection from '@/components/HeroSection'
 import Footer from '@/components/Footer'
 import TopNav from '@/components/TopNav'
 
+const FAQ = [
+  {
+    q: 'The video isn\'t reacting to music. What\'s wrong?',
+    a: 'Make sure your iPhone\'s microphone permission is enabled for RhythmReel. Go to Settings > Privacy & Security > Microphone and ensure RhythmReel is toggled on. Then try playing music loudly near your device.',
+  },
+  {
+    q: 'Can I use music from Spotify or Apple Music?',
+    a: 'Yes — set RhythmReel to use the microphone, then play music from any app. RhythmReel listens to the audio around you, so any music source works.',
+  },
+  {
+    q: 'I don\'t have any music on my phone, what do I do?',
+    a: 'No problem — you have a few options: (1) use your phone\'s microphone to react to any ambient sound; (2) choose one of the included original royalty-free songs built into the app; or (3) find music in your phone\'s browser, screen record it, and import that video using the audio import button.',
+  },
+  {
+    q: 'What is the watermark on my exported video?',
+    a: 'Exports include a small "Made with Rhythm Reel" logo. It can be removed via an in-app purchase.',
+  },
+  {
+    q: 'Can I export in higher quality?',
+    a: 'Standard exports are 720×1280. 1080×1920 is available as an in-app purchase.',
+  },
+  {
+    q: 'How do I save my video?',
+    a: 'Tap Export while your video is reacting to music. When you stop recording, a share sheet will appear. Tap \'Save to Photos\' or share directly to Instagram, TikTok, or any app.',
+  },
+  {
+    q: 'The app asked for camera/microphone/photo access and I said no. How do I fix it?',
+    a: 'Go to Settings > RhythmReel and enable the permissions you\'d like to grant.',
+  },
+  {
+    q: 'My video isn\'t in my camera roll. What happened?',
+    a: 'After recording, use the share sheet that appears to save your video to Photos. The video is not automatically saved — you need to tap \'Save to Photos.\'',
+  },
+]
+
 const HOW_IT_WORKS = [
   {
     step: '01',
@@ -11,12 +46,12 @@ const HOW_IT_WORKS = [
   {
     step: '02',
     title: 'Play music',
-    desc: 'Use your phone\'s mic to catch ambient sound or import any audio file directly. The audio scrubs your video in real time. Loud sounds move the playhead all the way to the end of the video, and soft sounds only move the playhead slightly.',
+    desc: 'Use your phone\'s mic, import any audio file, or choose one of the included songs. The audio scrubs your video in real time. Loud sounds move the playhead all the way to the end of the video, and soft sounds only move the playhead slightly.',
   },
   {
     step: '03',
     title: 'Record & Share',
-    desc: 'Tap "Record to export". A video of your RhythmReel is saved to your photos for easy sharing with friends via message or on social media.',
+    desc: 'Tap "Export". A video of your RhythmReel is saved to your photos for easy sharing with friends via message or on social media.',
   },
 ]
 
@@ -40,6 +75,16 @@ const FEATURES = [
     icon: 'T',
     title: 'Text overlay',
     desc: 'Type, move, resize, and stylise text that moves to the audio and gets composited into the export.',
+  },
+  {
+    icon: '♪',
+    title: 'Included songs',
+    desc: 'Four royalty-free tracks included — no subscription or mic needed to get started.',
+  },
+  {
+    icon: '◯',
+    title: 'Outer glow',
+    desc: 'Add a customizable edge glow around your video that pulses with the audio.',
   },
 ]
 
@@ -125,17 +170,7 @@ export default function HomePage() {
               color: 'rgba(255,255,255,0.9)',
             }}
           >
-            Audio amplitude mapped to video playback{' '}
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #F54A8A, #8A2BE3)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              for the children.
-            </span>
+            Make your videos dance to music.
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -164,6 +199,73 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* About the Creator */}
+      <section
+        id="about"
+        className="py-20 px-6"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+      >
+        <div className="max-w-2xl mx-auto">
+          <h2
+            className="font-black tracking-tight mb-8"
+            style={{
+              fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+              color: 'rgba(255,255,255,0.9)',
+            }}
+          >
+            Evan Roth
+          </h2>
+          <p className="text-white/65 text-sm leading-relaxed mb-4">
+            I&apos;m Evan Roth, a visual artist based in Berlin. My work spans photography, painting,
+            video, textiles, and software — you can see the art I make at{' '}
+            <a href="https://evan-roth.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>evan-roth.com</a>.
+            It&apos;s in the permanent collection of MoMA, among other places.
+          </p>
+          <p className="text-white/65 text-sm leading-relaxed mb-4">
+            I&apos;m also a lifelong music lover who has been spending more and more of my after-hours
+            time learning to DJ, making beats (I made the beat playing on this site), and building
+            music software. RhythmReel is the latest result of that obsession.
+          </p>
+          <p className="text-white/65 text-sm leading-relaxed">
+            More software and tutorials on YouTube at{' '}
+            <a href="https://www.youtube.com/@evan-roth-com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>Beats and Bobbins</a>.
+            {' '}Instagram at{' '}
+            <a href="https://www.instagram.com/evanroth_/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>@evanroth_</a>.
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section
+        id="faq"
+        className="py-20 px-6"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+      >
+        <div className="max-w-2xl mx-auto">
+          <h2
+            className="font-black tracking-tight mb-10"
+            style={{
+              fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+              color: 'rgba(255,255,255,0.9)',
+            }}
+          >
+            FAQ
+          </h2>
+          <div className="space-y-4">
+            {FAQ.map(({ q, a }) => (
+              <div
+                key={q}
+                className="p-6 rounded-2xl"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+              >
+                <h3 className="text-white font-medium mb-3 text-sm leading-snug">{q}</h3>
+                <p className="text-white/55 text-sm leading-relaxed">{a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-20 px-6 text-center">
         <h2
@@ -178,7 +280,7 @@ export default function HomePage() {
         >
           RhythmReel: Music makes it move
         </h2>
-        <p className="text-white/40 mb-8 text-lg font-light">Free on the App Store. iPhone only.</p>
+        <p className="text-white/40 mb-8 text-lg font-light">Free on the App Store. Optional in-app purchases available. iPhone only.</p>
         <a
           href="https://apps.apple.com/app/photo-bounce/idXXXXXXXXX"
           className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-base transition-all duration-200 hover:brightness-110 active:scale-95"

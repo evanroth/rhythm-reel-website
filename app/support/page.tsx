@@ -6,29 +6,6 @@ export const metadata: Metadata = {
   description: 'Get help with RhythmReel. FAQ and contact information.',
 }
 
-const FAQ = [
-  {
-    q: 'The video isn\'t reacting to music. What\'s wrong?',
-    a: 'Make sure your iPhone\'s microphone permission is enabled for RhythmReel. Go to Settings > Privacy & Security > Microphone and ensure RhythmReel is toggled on. Then try playing music loudly near your device.',
-  },
-  {
-    q: 'Can I use music from Spotify or Apple Music?',
-    a: 'Yes — set RhythmReel to use the microphone, then play music from any app. RhythmReel listens to the audio around you, so any music source works.',
-  },
-  {
-    q: 'How do I save my video?',
-    a: 'Tap the record button while your video is reacting to music. When you stop recording, a share sheet will appear automatically. Tap \'Save to Photos\' or share directly to Instagram, TikTok, or any app.',
-  },
-  {
-    q: 'The app asked for camera/microphone/photo access and I said no. How do I fix it?',
-    a: 'Go to Settings > RhythmReel and enable the permissions you\'d like to grant.',
-  },
-  {
-    q: 'My video isn\'t in my camera roll. What happened?',
-    a: 'After recording, use the share sheet that appears to save your video to Photos. The video is not automatically saved — you need to tap \'Save to Photos.\'',
-  },
-]
-
 export default function SupportPage() {
   return (
     <div style={{ background: '#0F081E', minHeight: '100vh' }}>
@@ -44,24 +21,23 @@ export default function SupportPage() {
         <h1 className="text-white font-black text-4xl tracking-tight mb-2">Support</h1>
         <p className="text-white/40 mb-12">Need help with RhythmReel? We&apos;re here.</p>
 
-        {/* FAQ */}
-        <h2 className="text-white font-semibold text-xl mb-6">Frequently asked questions</h2>
-        <div className="space-y-4">
-          {FAQ.map(({ q, a }) => (
-            <div
-              key={q}
-              className="p-6 rounded-2xl"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
-            >
-              <h3 className="text-white font-medium mb-3 text-sm leading-snug">{q}</h3>
-              <p className="text-white/55 text-sm leading-relaxed">{a}</p>
-            </div>
-          ))}
+        {/* FAQ link */}
+        <div
+          className="mb-10 p-6 rounded-2xl"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+        >
+          <p className="text-white/55 text-sm leading-relaxed">
+            For common questions, see the{' '}
+            <Link href="/#faq" className="underline underline-offset-2 hover:text-white/90 transition-colors" style={{ color: '#F54A8A' }}>
+              FAQ on our homepage
+            </Link>
+            .
+          </p>
         </div>
 
         {/* Contact */}
         <div
-          className="mt-10 p-6 rounded-2xl"
+          className="p-6 rounded-2xl"
           style={{
             background: 'linear-gradient(135deg, rgba(255,45,85,0.08), rgba(138,43,227,0.08))',
             border: '1px solid rgba(245,74,138,0.2)',
