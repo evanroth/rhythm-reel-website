@@ -109,6 +109,8 @@ export default function VideoCell({
       ref={wrapRef}
       className={`relative ${className ?? ''}`}
       style={{
+        width: '100%',
+        height: '100%',
         transition: 'transform 0.05s ease-out',
         willChange: 'transform, filter',
         ...style,
