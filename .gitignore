@@ -23,6 +23,9 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 
+# Source/working video files (not for deployment)
+website-videos/
+
 # OS
 .DS_Store
 Thumbs.db
