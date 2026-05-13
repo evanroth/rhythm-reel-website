@@ -17,7 +17,7 @@ const FAQ = [
   },
   {
     q: 'What is the watermark on my exported video?',
-    a: 'Exports include a "Made with Rhythm Reel" logo. It can be removed via an in-app purchase.',
+    a: 'Exports include a "Made with RhythmReel" logo. It can be removed via an in-app purchase.',
   },
   {
     q: 'Can I export in higher quality?',

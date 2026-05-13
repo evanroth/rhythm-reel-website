@@ -1,4 +1,4 @@
-# Rhythm Reel Website — CLAUDE.md
+# RhythmReel Website — CLAUDE.md
 
 > Brand colors, assets, and design philosophy are defined in the parent context:
 > `Photo-Bounce/CLAUDE.md` (one level up — inherited automatically by Claude Code)
@@ -7,7 +7,7 @@
 
 ## Purpose
 
-This is the marketing / landing page website for the **Rhythm Reel** brand and the **Photo Bounce** iOS app. Its goals are:
+This is the marketing / landing page website for the **RhythmReel** brand and the **Photo Bounce** iOS app. Its goals are:
 
 1. Explain what the app does quickly and visually
 2. Drive App Store downloads
@@ -38,7 +38,7 @@ This is the marketing / landing page website for the **Rhythm Reel** brand and t
 
 ## Page Structure — Home (`/`)
 
-1. **Hero section** (interactive, client-rendered): 6 video cells flanking the centered "RHYTHM REEL" wordmark. All cells scrub their playhead in real time based on audio amplitude — exactly like the app. Full-width waveform canvas below. Mic toggle + Play Track button.
+1. **Hero section** (interactive, client-rendered): 6 video cells flanking the centered "RHYTHMREEL" wordmark. All cells scrub their playhead in real time based on audio amplitude — exactly like the app. Full-width waveform canvas below. Mic toggle + Play Track button.
 2. **How it works**: 3-step visual explainer (pick video → pick audio → record & share)
 3. **Description block**: Short copy explaining the app
 4. **Features section**: Scale pulse, EQ bars, multi-clip playlist, text overlay

@@ -46,7 +46,7 @@ export default function ComingSoonPage() {
         <div className="relative w-64 h-16">
           <Image
             src="/logo/wordmark.png"
-            alt="Rhythm Reel"
+            alt="RhythmReel"
             fill
             style={{ objectFit: 'contain' }}
             priority
