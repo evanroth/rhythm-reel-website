@@ -33,12 +33,14 @@ export default function VideoCell({
     let duration = 0
     let isSeeking = false
     let pendingPosition: number | null = null
+    let lastSeekPos = -1
+    let styleFrame = 0
 
-    // ── Seek machinery (mirrors iOS VideoScrubber isSeeking/pendingAmplitude) ──
     const doSeek = (position: number) => {
       isSeeking = true
+      lastSeekPos = position
       video.currentTime = position * duration
-      video.pause() // keep video from advancing on its own
+      video.pause()
     }
 
     const onSeeked = () => {
@@ -52,11 +54,9 @@ export default function VideoCell({
 
     video.addEventListener('seeked', onSeeked)
 
-    // ── Metadata ──
     const onMeta = () => {
       duration = video.duration
       video.pause()
-      console.log(`[VideoCell ${index}] loaded — duration: ${video.duration.toFixed(2)}s`)
     }
 
     video.addEventListener('loadedmetadata', onMeta)
@@ -64,32 +64,38 @@ export default function VideoCell({
     if (video.readyState >= 1 && video.duration > 0) {
       duration = video.duration
       video.pause()
-      console.log(`[VideoCell ${index}] already loaded — duration: ${video.duration.toFixed(2)}s`)
     } else {
       video.load()
     }
 
-    // ── RAF loop: visual effects every frame, seeks throttled via seeked event ──
     const tick = () => {
       const amp = amplitudeRef.current
 
       if (duration > 0) {
         const position = Math.max(0, Math.min(1, amp + offset))
-        if (!isSeeking) {
-          doSeek(position)
-        } else {
-          pendingPosition = position // newest amplitude always wins
+        // Deadband: skip seek if target is within ~half a frame of the last one
+        const frameStep = 0.5 / (30 * duration)
+        if (Math.abs(position - lastSeekPos) > frameStep) {
+          if (!isSeeking) {
+            doSeek(position)
+          } else {
+            pendingPosition = position
+          }
         }
       }
 
-      // Visual effects written directly to DOM — no React re-render cost
+      // Cheap GPU-only update every frame
       const scale = 1 + amp * 0.06
-      const glow = 6 + amp * 28
-      const opacity = 0.12 + amp * 0.55
       wrap.style.transform = `scale(${scale})`
-      wrap.style.boxShadow =
-        `0 0 ${glow}px rgba(245,74,138,${opacity}), 0 0 ${glow * 0.5}px rgba(138,43,227,${opacity * 0.7})`
-      wrap.style.borderColor = `rgba(245,74,138,${0.08 + amp * 0.45})`
+
+      // Expensive box-shadow / border updates throttled to every 3rd frame (~20Hz)
+      if ((styleFrame++ & 3) === 0) {
+        const glow = 6 + amp * 28
+        const opacity = 0.12 + amp * 0.55
+        wrap.style.boxShadow =
+          `0 0 ${glow}px rgba(245,74,138,${opacity}), 0 0 ${glow * 0.5}px rgba(138,43,227,${opacity * 0.7})`
+        wrap.style.borderColor = `rgba(245,74,138,${0.08 + amp * 0.45})`
+      }
 
       rafRef.current = requestAnimationFrame(tick)
     }
@@ -109,7 +115,8 @@ export default function VideoCell({
       className={`relative overflow-hidden rounded-2xl ${className ?? ''}`}
       style={{
         border: '1px solid rgba(245,74,138,0.08)',
-        transition: 'transform 0.05s ease-out, box-shadow 0.05s ease-out, border-color 0.05s ease-out',
+        transition: 'transform 0.05s ease-out',
+        willChange: 'transform',
         ...style,
       }}
     >
@@ -119,6 +126,8 @@ export default function VideoCell({
         muted
         playsInline
         preload="auto"
+        disableRemotePlayback
+        disablePictureInPicture
         className="w-full h-full object-cover block"
       />
 

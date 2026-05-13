@@ -39,6 +39,8 @@ export default function HeroSection() {
   const amplitudeRef = useRef<number>(0)
   const settingsRef = useRef<AudioSettings>(DEFAULT_SETTINGS)
   const liveRef = useRef<LiveDebugValues>({ rawRms: 0, amplitude: 0 })
+  const frequencyDataRef = useRef<Uint8Array | null>(null)
+  const isActiveRef = useRef<boolean>(false)
   const wordmarkRef = useRef<HTMLImageElement>(null)
   const heroAreaRef = useRef<HTMLDivElement>(null)
 
@@ -74,10 +76,11 @@ export default function HeroSection() {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const [{ source, amplitude, frequencyData, isMusicPlaying, beatFlash }, { toggleMusic }] =
-    useAudioEngine(audioRef, amplitudeRef, settingsRef, liveRef)
+  const [{ source, amplitude, isMusicPlaying, beatFlash }, { toggleMusic }] =
+    useAudioEngine(audioRef, amplitudeRef, settingsRef, liveRef, frequencyDataRef)
 
   const isActive = source !== 'idle'
+  isActiveRef.current = isActive
   const logoScale = 1 + amplitude * 0.03
 
   return (
@@ -106,7 +109,11 @@ export default function HeroSection() {
 
         {/* Waveform — behind everything, center aligned to wordmark (desktop only) */}
         <div className="hidden md:block absolute inset-x-0 pointer-events-none" style={{ top: `${waveformCenterPct - 15}%`, height: '30%', zIndex: 1 }}>
-          <Waveform frequencyData={frequencyData} amplitude={amplitude} isActive={isActive} />
+          <Waveform
+            frequencyDataRef={frequencyDataRef}
+            amplitudeRef={amplitudeRef}
+            isActiveRef={isActiveRef}
+          />
         </div>
 
         {/* Videos — desktop scattered layout (hidden on mobile) */}

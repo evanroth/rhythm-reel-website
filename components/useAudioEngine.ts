@@ -8,7 +8,6 @@ export type AudioSource = 'idle' | 'music'
 export interface AudioState {
   source: AudioSource
   amplitude: number
-  frequencyData: Uint8Array | null
   isMusicPlaying: boolean
   beatFlash: boolean
 }
@@ -27,6 +26,7 @@ export function useAudioEngine(
   amplitudeRef?: React.MutableRefObject<number>,
   settingsRef?: React.MutableRefObject<AudioSettings>,
   liveRef?: React.MutableRefObject<LiveDebugValues>,
+  frequencyDataRef?: React.MutableRefObject<Uint8Array | null>,
 ): [AudioState, AudioControls] {
   const ctxRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
@@ -37,7 +37,6 @@ export function useAudioEngine(
 
   const [source, setSource] = useState<AudioSource>('idle')
   const [amplitude, setAmplitude] = useState(0)
-  const [frequencyData, setFrequencyData] = useState<Uint8Array | null>(null)
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
   const [beatFlash, setBeatFlash] = useState(false)
 
@@ -65,6 +64,9 @@ export function useAudioEngine(
     const bufLen = analyser.frequencyBinCount
     const timeData = new Uint8Array(bufLen)
     const freqData = new Uint8Array(bufLen)
+    if (frequencyDataRef) frequencyDataRef.current = freqData
+
+    let amplitudeTick = 0
 
     const tick = () => {
       const s = settingsRef?.current ?? DEFAULT_SETTINGS
@@ -102,12 +104,15 @@ export function useAudioEngine(
         beat.flashTimer = window.setTimeout(() => setBeatFlash(false), 120)
       }
 
-      setAmplitude(smoothed)
-      setFrequencyData(new Uint8Array(freqData))
+      // Throttle React state updates to ~10Hz — keeps button glow / scale reactive
+      // without forcing the tree to re-render every frame. Hot per-frame consumers
+      // (VideoCell, Waveform) read straight from refs.
+      if ((amplitudeTick++ % 6) === 0) setAmplitude(smoothed)
+
       rafRef.current = requestAnimationFrame(tick)
     }
     rafRef.current = requestAnimationFrame(tick)
-  }, [stopRaf, amplitudeRef, settingsRef, liveRef])
+  }, [stopRaf, amplitudeRef, settingsRef, liveRef, frequencyDataRef])
 
   const toggleMusic = useCallback(() => {
     const audio = audioRef.current
@@ -154,7 +159,7 @@ export function useAudioEngine(
   }, [stopRaf])
 
   return [
-    { source, amplitude, frequencyData, isMusicPlaying, beatFlash },
+    { source, amplitude, isMusicPlaying, beatFlash },
     { toggleMusic },
   ]
 }
