@@ -42,44 +42,50 @@ export default function ScreenCaptures() {
           Screen Captures
         </h2>
 
-        <div className="flex gap-6 justify-center">
+        <div className="flex justify-center" style={{ gap: '72px' }}>
           {TRAILERS.map(({ src }, i) => (
-            // Outer wrapper constrains the phone width
-            <div key={src} style={{ width: 'clamp(140px, 28vw, 260px)' }}>
-              {/* Phone mockup container — matches PNG aspect ratio */}
-              <div className="relative" style={{ aspectRatio: '1359 / 2736' }}>
+            // Height-driven sizing: 85svh tall, width follows aspect ratio
+            <div
+              key={src}
+              className="relative flex-shrink-0"
+              style={{ height: '85svh', aspectRatio: '1359 / 2736' }}
+            >
+              {/* Video behind the frame, aligned to the transparent screen area */}
+              <video
+                ref={el => { videoRefs.current[i] = el }}
+                src={src}
+                controls
+                playsInline
+                preload="metadata"
+                onPlay={() => handlePlay(i)}
+                style={{
+                  position: 'absolute',
+                  top: SCREEN.top,
+                  left: SCREEN.left,
+                  right: SCREEN.right,
+                  bottom: SCREEN.bottom,
+                  width: `calc(100% - ${SCREEN.left} - ${SCREEN.right})`,
+                  height: `calc(100% - ${SCREEN.top} - ${SCREEN.bottom})`,
+                  objectFit: 'cover',
+                  background: '#000',
+                  zIndex: 1,
+                }}
+              />
 
-                {/* Video sits behind the phone frame, aligned to the transparent screen area */}
-                <video
-                  ref={el => { videoRefs.current[i] = el }}
-                  src={src}
-                  controls
-                  playsInline
-                  preload="metadata"
-                  onPlay={() => handlePlay(i)}
-                  style={{
-                    position: 'absolute',
-                    top: SCREEN.top,
-                    left: SCREEN.left,
-                    right: SCREEN.right,
-                    bottom: SCREEN.bottom,
-                    width: `calc(100% - ${SCREEN.left} - ${SCREEN.right})`,
-                    height: `calc(100% - ${SCREEN.top} - ${SCREEN.bottom})`,
-                    objectFit: 'cover',
-                    background: '#000',
-                    zIndex: 1,
-                  }}
-                />
-
-                {/* iPhone frame PNG — transparent screen lets the video show through */}
-                <Image
-                  src="/iphone-frame.png"
-                  alt="iPhone frame"
-                  fill
-                  style={{ objectFit: 'fill', pointerEvents: 'none', zIndex: 2 }}
-                  priority
-                />
-              </div>
+              {/* iPhone frame PNG — transparent screen reveals the video below.
+                  drop-shadow follows the phone silhouette (unlike box-shadow). */}
+              <Image
+                src="/iphone-frame.png"
+                alt="iPhone frame"
+                fill
+                style={{
+                  objectFit: 'fill',
+                  pointerEvents: 'none',
+                  zIndex: 2,
+                  filter: 'drop-shadow(0 0 40px rgba(245,74,138,0.45)) drop-shadow(0 0 80px rgba(245,74,138,0.2))',
+                }}
+                priority
+              />
             </div>
           ))}
         </div>
