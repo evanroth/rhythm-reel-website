@@ -2,6 +2,9 @@
 
 import { useRef, useEffect } from 'react'
 
+// Pixel-sampled screen insets within the 1359×2736 iPhone frame PNG
+const SCREEN = { top: '3.3%', left: '6.6%', right: '6.6%', bottom: '3.5%' }
+
 interface VideoCellProps {
   src: string
   amplitudeRef: React.MutableRefObject<number>
@@ -34,7 +37,6 @@ export default function VideoCell({
     let isSeeking = false
     let pendingPosition: number | null = null
     let lastSeekPos = -1
-    let styleFrame = 0
 
     const doSeek = (position: number) => {
       isSeeking = true
@@ -73,7 +75,6 @@ export default function VideoCell({
 
       if (duration > 0) {
         const position = Math.max(0, Math.min(1, amp + offset))
-        // Deadband: skip seek if target is within ~half a frame of the last one
         const frameStep = 0.5 / (30 * duration)
         if (Math.abs(position - lastSeekPos) > frameStep) {
           if (!isSeeking) {
@@ -84,18 +85,12 @@ export default function VideoCell({
         }
       }
 
-      // Cheap GPU-only update every frame
+      // scale + drop-shadow on the wrapper — drop-shadow traces the phone silhouette
       const scale = 1 + amp * 0.06
+      const glow = 6 + amp * 28
+      const opacity = 0.12 + amp * 0.55
       wrap.style.transform = `scale(${scale})`
-
-      // Expensive box-shadow / border updates throttled to every 3rd frame (~20Hz)
-      if ((styleFrame++ & 3) === 0) {
-        const glow = 6 + amp * 28
-        const opacity = 0.12 + amp * 0.55
-        wrap.style.boxShadow =
-          `0 0 ${glow}px rgba(245,74,138,${opacity}), 0 0 ${glow * 0.5}px rgba(138,43,227,${opacity * 0.7})`
-        wrap.style.borderColor = `rgba(245,74,138,${0.08 + amp * 0.45})`
-      }
+      wrap.style.filter = `drop-shadow(0 0 ${glow}px rgba(245,74,138,${opacity}))`
 
       rafRef.current = requestAnimationFrame(tick)
     }
@@ -112,14 +107,14 @@ export default function VideoCell({
   return (
     <div
       ref={wrapRef}
-      className={`relative overflow-hidden rounded-2xl ${className ?? ''}`}
+      className={`relative ${className ?? ''}`}
       style={{
-        border: '1px solid rgba(245,74,138,0.08)',
         transition: 'transform 0.05s ease-out',
-        willChange: 'transform',
+        willChange: 'transform, filter',
         ...style,
       }}
     >
+      {/* Video sits within the phone's transparent screen area */}
       <video
         ref={videoRef}
         src={src}
@@ -128,10 +123,22 @@ export default function VideoCell({
         preload="auto"
         disableRemotePlayback
         disablePictureInPicture
-        className="w-full h-full object-cover block"
+        style={{
+          position: 'absolute',
+          top: SCREEN.top,
+          left: SCREEN.left,
+          right: SCREEN.right,
+          bottom: SCREEN.bottom,
+          width: `calc(100% - ${SCREEN.left} - ${SCREEN.right})`,
+          height: `calc(100% - ${SCREEN.top} - ${SCREEN.bottom})`,
+          objectFit: 'cover',
+          background: '#000',
+          display: 'block',
+          zIndex: 1,
+        }}
       />
 
-      {/* Beat flash */}
+      {/* Beat flash — shows through the transparent screen area */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -139,6 +146,26 @@ export default function VideoCell({
             ? 'radial-gradient(circle, rgba(245,74,138,0.3) 0%, transparent 70%)'
             : 'transparent',
           transition: 'background 0.1s ease-out',
+          zIndex: 2,
+        }}
+      />
+
+      {/* iPhone frame PNG — transparent screen reveals video below.
+          Sits on top of everything; pointer-events disabled so the hero
+          scale-pulse and interactions still work. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/iphone-frame.png"
+        alt=""
+        aria-hidden
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'fill',
+          pointerEvents: 'none',
+          zIndex: 3,
         }}
       />
     </div>
