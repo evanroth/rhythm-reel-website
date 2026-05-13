@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — RhythmReel',
+  title: 'Privacy Policy | RhythmReel',
   description: 'Privacy policy for the RhythmReel iOS app.',
 }
 
@@ -37,17 +37,17 @@ export default function PrivacyPage() {
             <p>The app requests access to the following device features:</p>
             <ul className="list-disc pl-5 space-y-2">
               <li>
-                <strong className="text-white/80">Camera</strong> — Used to record video clips
+                <strong className="text-white/80">Camera:</strong> Used to record video clips
                 within the app. Video is processed locally on your device and is never uploaded
                 or transmitted anywhere.
               </li>
               <li>
-                <strong className="text-white/80">Microphone</strong> — Used to capture audio
+                <strong className="text-white/80">Microphone:</strong> Used to capture audio
                 input that drives the video effect in real time. Audio is processed locally and
                 is never recorded, stored, or transmitted.
               </li>
               <li>
-                <strong className="text-white/80">Photo Library</strong> — Used to let you select
+                <strong className="text-white/80">Photo Library:</strong> Used to let you select
                 existing videos and Live Photos from your camera roll. Selected media is processed
                 locally and is never uploaded or transmitted.
               </li>

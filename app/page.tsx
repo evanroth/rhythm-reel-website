@@ -14,7 +14,7 @@ const FAQ = [
   },
   {
     q: 'I don\'t have any music on my phone, what do I do?',
-    a: 'No problem — you have a few options: (1) use your phone\'s microphone to react to any ambient sound; (2) choose one of the included original royalty-free songs built into the app; or (3) find music in your phone\'s browser, screen record it, and import that video using the audio import button.',
+    a: 'No problem. You have a few options: (1) use your phone\'s microphone to react to any ambient sound; (2) choose one of the included original royalty-free songs built into the app; or (3) find music in your phone\'s browser, screen record it, and import that video using the audio import button.',
   },
   {
     q: 'What is the watermark on my exported video?',
@@ -34,7 +34,7 @@ const FAQ = [
   },
   {
     q: 'My video isn\'t in my camera roll. What happened?',
-    a: 'After recording, use the share sheet that appears to save your video to Photos. The video is not automatically saved — you need to tap \'Save to Photos.\'',
+    a: 'After recording, use the share sheet that appears to save your video to Photos. The video is not automatically saved. Tap \'Save to Photos.\'',
   },
 ]
 
@@ -80,7 +80,7 @@ const FEATURES = [
   {
     icon: '♪',
     title: 'Included songs',
-    desc: 'Four royalty-free tracks included — no subscription or mic needed to get started.',
+    desc: 'Four royalty-free tracks included. No subscription or mic needed to get started.',
   },
   {
     icon: '◯',
@@ -154,7 +154,7 @@ export default function HomePage() {
             style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'rgba(255,255,255,0.55)' }}
           >
             RhythmReel is an iPhone app I made that makes your videos and live photos move to music.
-            Pick a clip. Play a song. The audio controls everything — when the beat drops, your video
+            Pick a clip. Play a song. The audio controls everything: when the beat drops, your video
             jumps forward. When it quiets, it eases back. The result is a playful, music-reactive video
             you can make and share with friends and post to social media in seconds.
           </p>

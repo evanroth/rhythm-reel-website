@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Support — RhythmReel',
+  title: 'Support | RhythmReel',
   description: 'Get help with RhythmReel. FAQ and contact information.',
 }
 
