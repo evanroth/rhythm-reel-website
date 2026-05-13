@@ -76,8 +76,15 @@ export default function HeroSection() {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const [{ source, amplitude, isMusicPlaying, beatFlash }, { toggleMusic }] =
+  const [{ source, amplitude, isMusicPlaying, beatFlash }, { toggleMusic, pauseMusic }] =
     useAudioEngine(audioRef, amplitudeRef, settingsRef, liveRef, frequencyDataRef)
+
+  // Pause hero music when a trailer starts playing
+  useEffect(() => {
+    const handler = () => pauseMusic()
+    window.addEventListener('rr-trailer-play', handler)
+    return () => window.removeEventListener('rr-trailer-play', handler)
+  }, [pauseMusic])
 
   const isActive = source !== 'idle'
   isActiveRef.current = isActive

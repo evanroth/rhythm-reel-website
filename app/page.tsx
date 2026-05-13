@@ -1,6 +1,7 @@
 import HeroSection from '@/components/HeroSection'
 import Footer from '@/components/Footer'
 import TopNav from '@/components/TopNav'
+import ScreenCaptures from '@/components/ScreenCaptures'
 
 const FAQ = [
   {
@@ -198,6 +199,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Screen Captures */}
+      <ScreenCaptures />
 
       {/* FAQ */}
       <section

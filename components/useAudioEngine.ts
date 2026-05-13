@@ -14,6 +14,7 @@ export interface AudioState {
 
 export interface AudioControls {
   toggleMusic: () => void
+  pauseMusic: () => void
 }
 
 export interface LiveDebugValues {
@@ -114,6 +115,18 @@ export function useAudioEngine(
     rafRef.current = requestAnimationFrame(tick)
   }, [stopRaf, amplitudeRef, settingsRef, liveRef, frequencyDataRef])
 
+  const pauseMusic = useCallback(() => {
+    const audio = audioRef.current
+    if (!audio || !isMusicPlaying) return
+    audio.pause()
+    setIsMusicPlaying(false)
+    setSource('idle')
+    stopRaf()
+    setAmplitude(0)
+    prevAmplitudeRef.current = 0
+    if (amplitudeRef) amplitudeRef.current = 0
+  }, [isMusicPlaying, audioRef, stopRaf, amplitudeRef])
+
   const toggleMusic = useCallback(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -160,6 +173,6 @@ export function useAudioEngine(
 
   return [
     { source, amplitude, isMusicPlaying, beatFlash },
-    { toggleMusic },
+    { toggleMusic, pauseMusic },
   ]
 }
