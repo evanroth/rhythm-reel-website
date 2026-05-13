@@ -10,10 +10,10 @@ export interface AudioSettings {
 }
 
 export const DEFAULT_SETTINGS: AudioSettings = {
-  rmsBoost: 2.5,
-  lowPass: 0.45,
+  rmsBoost: 3.5,
+  lowPass: 0.15,
   outputPower: 2.0,
-  analyserSmoothing: 0.10,
+  analyserSmoothing: 0.15,
 }
 
 interface LiveValues {
