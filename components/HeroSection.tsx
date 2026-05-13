@@ -22,16 +22,16 @@ const VIDEO_SRCS = [
 // Positions are relative to the hero container. Negative = left/up. Videos intentionally overlap the logo edges.
 const VIDEO_LAYOUT = [
   // left column — outer
-  { left: '2%',  top: '6%',  width: 200, aspect: 1359/2736, rotate: -7,  offset: -0.03 }, // top-left
-  { left: '11%', top: '26%', width: 158, aspect: 1359/2736, rotate: 4,   offset:  0.04 }, // mid-left  (overlaps outer videos)
-  { left: '4%',  top: '59%', width: 190, aspect: 1359/2736, rotate: -4,  offset: -0.02 }, // bot-left
+  { left: '2%',  top: '6%',  width: 200, aspect: 9/16, rotate: -7,  offset: -0.03 }, // top-left
+  { left: '11%', top: '26%', width: 158, aspect: 9/16, rotate: 4,   offset:  0.04 }, // mid-left  (overlaps outer videos)
+  { left: '4%',  top: '64%', width: 190, aspect: 9/16, rotate: -4,  offset: -0.02 }, // bot-left
   // right column — outer
-  { right: '2%', top: '10%', width: 185, aspect: 1359/2736, rotate: 6,   offset:  0.03 }, // top-right
-  { right: '11%', top: '28%', width: 155, aspect: 1359/2736, rotate: -4,  offset: -0.04 }, // mid-right (overlaps outer videos)
-  { right: '3%', top: '57%', width: 195, aspect: 1359/2736, rotate: 4,   offset:  0.02 }, // bot-right
+  { right: '2%', top: '10%', width: 185, aspect: 9/16, rotate: 6,   offset:  0.03 }, // top-right
+  { right: '11%', top: '28%', width: 155, aspect: 9/16, rotate: -4,  offset: -0.04 }, // mid-right (overlaps outer videos)
+  { right: '3%', top: '62%', width: 195, aspect: 9/16, rotate: 4,   offset:  0.02 }, // bot-right
   // inner-center pair — sit in front of adjacent outer cards
-  { left: '15%',  top: '47%', width: 168, aspect: 1359/2736, rotate: 5,  offset:  0.05, zIndex: 3 }, // inner-left
-  { right: '15%', top: '47%', width: 168, aspect: 1359/2736, rotate: -5, offset: -0.05, zIndex: 3 }, // inner-right
+  { left: '15%',  top: '51%', width: 168, aspect: 9/16, rotate: 5,  offset:  0.05, zIndex: 3 }, // inner-left
+  { right: '15%', top: '51%', width: 168, aspect: 9/16, rotate: -5, offset: -0.05, zIndex: 3 }, // inner-right
 ]
 
 export default function HeroSection() {
