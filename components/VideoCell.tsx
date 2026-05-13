@@ -85,12 +85,11 @@ export default function VideoCell({
         }
       }
 
-      // scale + drop-shadow on the wrapper — drop-shadow traces the phone silhouette
       const scale = 1 + amp * 0.06
       const glow = 6 + amp * 28
       const opacity = 0.12 + amp * 0.55
       wrap.style.transform = `scale(${scale})`
-      wrap.style.filter = `drop-shadow(0 0 ${glow}px rgba(245,74,138,${opacity}))`
+      wrap.style.boxShadow = `0 0 ${glow}px rgba(245,74,138,${opacity}), 0 0 ${glow * 0.5}px rgba(138,43,227,${opacity * 0.7})`
 
       rafRef.current = requestAnimationFrame(tick)
     }
@@ -157,7 +156,7 @@ export default function VideoCell({
           scale-pulse and interactions still work. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/iphone-frame.png"
+        src="/iphone-frame.webp"
         alt=""
         aria-hidden
         style={{

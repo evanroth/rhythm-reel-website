@@ -15,6 +15,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" as="image" href="/iphone-frame.webp" />
+      </head>
       <body style={{ background: '#0F081E' }}>{children}</body>
     </html>
   )

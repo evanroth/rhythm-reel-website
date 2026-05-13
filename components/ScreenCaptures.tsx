@@ -75,7 +75,7 @@ export default function ScreenCaptures() {
               {/* iPhone frame PNG — transparent screen reveals the video below.
                   drop-shadow follows the phone silhouette (unlike box-shadow). */}
               <Image
-                src="/iphone-frame.png"
+                src="/iphone-frame.webp"
                 alt="iPhone frame"
                 fill
                 style={{
